@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:embers_fitness/common/utils/future_utils.dart';
 import 'package:embers_fitness/data/repositories/workout_repository.dart';
 import 'package:embers_fitness/domain/workout_model.dart';
 import 'package:equatable/equatable.dart';
@@ -9,7 +10,7 @@ part 'workouts_state.dart';
 class WorkoutsBloc extends Bloc<WorkoutsEvent, WorkoutsState> {
   WorkoutsBloc({required WorkoutRepository workoutRepository})
       : _workoutRepository = workoutRepository,
-        super(const WorkoutsInitial()) {
+        super(const WorkoutsLoading()) {
     on<WorkoutsSubscriptionRequested>(_onSubscriptionRequested);
     on<WorkoutsWorkoutAdded>(_onWorkoutAdded);
     on<WorkoutsWorkoutDeletionRequested>(_onWorkoutDeletionRequested);
@@ -22,6 +23,8 @@ class WorkoutsBloc extends Bloc<WorkoutsEvent, WorkoutsState> {
     Emitter<WorkoutsState> emit,
   ) async {
     emit(const WorkoutsLoading());
+
+    await shortDelay();
 
     await emit.forEach(
       _workoutRepository.watchAllWorkouts(),

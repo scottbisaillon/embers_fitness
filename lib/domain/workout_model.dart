@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
 
 class NewWorkoutModel {
-  final DateTime date;
-
   NewWorkoutModel({required this.date});
+
+  final DateTime date;
 }
 
 class WorkoutModel {

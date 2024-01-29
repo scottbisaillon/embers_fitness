@@ -9,9 +9,13 @@ class WorkoutRepository {
   Future<void> addWorkout(NewWorkoutModel model) =>
       appDatabase.workoutDao.addWorkout(model);
 
+  Stream<WorkoutModel> watchWorkout(int id) => appDatabase.workoutDao
+      .watchWorkout(id)
+      .map((event) => WorkoutModel(id: event.id, date: event.date));
+
   Stream<List<WorkoutModel>> watchAllWorkouts() =>
       appDatabase.workoutDao.watchAllWorkouts(
-        (dbEntity) => WorkoutModel(id: dbEntity.id, date: dbEntity.date),
+        (entity) => WorkoutModel(id: entity.id, date: entity.date),
       );
 
   Future<void> deleteWorkout(int id) =>
